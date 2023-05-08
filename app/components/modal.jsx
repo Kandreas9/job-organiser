@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import send from "../../public/send.svg";
@@ -9,6 +9,7 @@ import wait from "../../public/wait.svg";
 
 export default function Modal({ children, closeModal }) {
     const { data: session, status } = useSession();
+    const router = useRouter();
 
     const [loadingEmail, setLoadingEmail] = useState(false);
     const [email, setEmail] = useState("");
@@ -56,9 +57,9 @@ export default function Modal({ children, closeModal }) {
                 }),
             });
 
-            const json2 = await res2.json();
+            const _json2 = await res2.json();
 
-            redirect(`${process.env.ORIGIN}/`);
+            router.reload();
         }
     };
     return (
