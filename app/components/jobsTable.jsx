@@ -1,5 +1,4 @@
 export default function JobsTable({ jobs }) {
-    console.log(jobs);
     return (
         <div className="overflow-x-auto">
             <table className="text-[.8rem] border-collapse border border-gray-main">

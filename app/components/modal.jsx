@@ -58,8 +58,7 @@ export default function Modal({ children, closeModal }) {
 
             const json2 = await res2.json();
 
-            console.log(json2);
-            redirect("/");
+            redirect(`${process.env.ORIGIN}/`);
         }
     };
     return (
