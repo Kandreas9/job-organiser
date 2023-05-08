@@ -23,7 +23,10 @@ export default function Modal({ children, closeModal }) {
         const res = await fetch("/api/generate-email", {
             cache: "no-store",
             method: "POST",
-            body: JSON.stringify(email),
+            body: JSON.stringify({
+                email,
+                user: session?.user,
+            }),
         });
         const json = await res.json();
 
@@ -34,32 +37,32 @@ export default function Modal({ children, closeModal }) {
     const handleEmail = async (e) => {
         e.preventDefault();
 
-        const res = await fetch("/api/email", {
+        const res = await fetch("/api/job/addJob", {
             cache: "no-store",
             method: "POST",
             body: JSON.stringify({
-                intro,
-                outro,
-                main: emailPreview,
                 email,
+                emailPreview,
+                user: session?.user,
             }),
         });
 
-        const json = await res.json();
+        const json = res.json();
 
-        if (json.success) {
-            const res2 = await fetch("/api/job/addJob", {
+        if (json.ok) {
+            await fetch("/api/email", {
                 cache: "no-store",
                 method: "POST",
                 body: JSON.stringify({
+                    intro,
+                    outro,
+                    main: emailPreview,
                     email,
-                    user: session?.user,
                 }),
             });
 
-            const _json2 = await res2.json();
-
-            router.reload();
+            router.refresh();
+            closeModal();
         }
     };
     return (

@@ -12,6 +12,7 @@ datasource db {
 
 model Job {
   id            String    @default(cuid()) @id
+  emailPreview  String?   @db.Text
   contactMail   String?   @unique
   enteprise     String?
   sector        String?
