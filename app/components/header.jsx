@@ -36,7 +36,7 @@ export default function Header() {
                     {isModalOpen && <Modal closeModal={closeModal}></Modal>}
                 </>
             ) : (
-                <nav className="ml-auto flex gap-2">test </nav>
+                <nav className="ml-auto flex gap-2">Job-Organiser</nav>
             )}
         </header>
     );
