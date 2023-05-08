@@ -1,0 +1,31 @@
+version: "3"
+services:
+  server:
+    container_name: server
+    command: bash ./wait-for-it.sh db:3306 -- ./push-and-run.sh
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+    volumes:
+      - data:/var/lib/mysql
+
+volumes:
+  data:
