@@ -5,27 +5,32 @@ export async function POST(req) {
     const { email, user, emailPreview } = await req.json();
 
     try {
-        const jobResult = await prisma.job.create({
-            data: {
-                contactMail: email,
-                userId: user.id,
-                emailPreview,
+        const jobExists = await prisma.job.findUnique({
+            where: {
+                email,
             },
         });
 
-        if (!jobResult) {
-            return new Response(
-                JSON.stringify({
-                    message: "Job for this mail already exists",
-                    ok: false,
-                }),
-                {
-                    status: 409,
-                }
-            );
+        if (!jobExists) {
+            const jobResult = await prisma.job.create({
+                data: {
+                    contactMail: email,
+                    userId: user.id,
+                    emailPreview,
+                },
+            });
+            return NextResponse.json({ result: jobResult, ok: true });
         }
 
-        return NextResponse.json({ result: jobResult, ok: true });
+        return new Response(
+            JSON.stringify({
+                message: "Job for this mail already exists",
+                ok: false,
+            }),
+            {
+                status: 409,
+            }
+        );
     } catch (err) {
         console.log(err.message);
     }
