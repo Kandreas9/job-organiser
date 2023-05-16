@@ -7,7 +7,7 @@ export async function POST(req) {
     try {
         const jobExists = await prisma.job.findUnique({
             where: {
-                email,
+                contactMail: email,
             },
         });
 
