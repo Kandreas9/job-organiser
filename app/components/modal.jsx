@@ -49,21 +49,19 @@ export default function Modal({ children, closeModal }) {
 
         const json = res.json();
 
-        if (json.ok) {
-            await fetch("/api/email", {
-                cache: "no-store",
-                method: "POST",
-                body: JSON.stringify({
-                    intro,
-                    outro,
-                    main: emailPreview,
-                    email,
-                }),
-            });
+        await fetch("/api/email", {
+            cache: "no-store",
+            method: "POST",
+            body: JSON.stringify({
+                intro,
+                outro,
+                main: emailPreview,
+                email,
+            }),
+        });
 
-            router.refresh();
-            closeModal();
-        }
+        router.refresh();
+        closeModal();
     };
     return (
         <>
